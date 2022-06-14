@@ -37,7 +37,7 @@ Hinweise zur Installation von ILIAS finden Sie unter: https://docu.ilias.de/ilia
 #### Komponente 2: Skin für ILIAS ####
 Anpassung der Lernplattform im Stil von Vimuki.
 
-Eine detailierte Installationsanleitung findet sich im Branch VimukiSkin.
+Eine detailierte Installationsanleitung findet sich im Branch Vimuki_Skin.
 
 #### Komponente 3: PersDashboard Plugin für ILIAS ####
 Das PersDashboard Plugin in Version 1.0 muss in ILIAS installiert werden, um auf dem Dashboard in ILIAS zusätzliche Informationen für alle Nutzer zu platzieren.
@@ -93,7 +93,7 @@ Nach jedem Update im MultiVC Plugin muss die Variable $joinBtnUrl erneut festgel
 
 Die Konfiguration des Plugins ist zu finden unter Administration  => ILIAS erweitern => Plugins. Neben dem Plugin Aktionen und Konfigurieren auswählen. Einen Screenshot der notwendigen Konfiguration finden Sie auf der nächsten Seite.
 
-TODO: BILD DER KONFIG
+![Bild der Konfiguration in ILIAS](https://github.com/museum4punkt0/VIMUKI_2.0/blob/main/MultiVC-Config.png)
 
 #### Komponente 6: VIMUKI WebService Plugin ####
 Bei dem Vimuki WebService Plugin handelt es sich um ein Soap Hook Plugin für ILIAS, dass die Standard Funktionen der ILIAS SOAP Schnittstelle um die Funktion eventVIMUKIObject erweitert. Bei Angabe der ref_id’s des MultiVC Objekts und der Sitzung wird die Startzeit der Sitzung zurückgegeben. Diese Startzeit wird in der PHP-Site benötigt, um zu bestimmen, ob noch genug Zeit für das Einstiegsspiel oder die Avatar-Auswahl ist.
@@ -103,66 +103,69 @@ Eine detailierte Installationsanleitung findet sich im Branch VIMUKIWebService
 #### Komponente 7: Vimuki PHP Site ####
 Für das Vimuki Projekt wurde eine spezielle PHP-basierte Website (MVC System) entwickelt, um das Eingangsspiel einzubinden und Zugang zu den BBB Räumen über die BBB API zu regulieren. Die PHP-Site funktioniert nur in Kombination mit der BBB API und dem Vimuki WebService Plugin.
 
-Eine detailierte Installationsanleitung findet sich im Branch PHPSite. 
-
-Link zum Repo des Packages bigbluebutton-api-php: https://github.com/bigbluebutton/bigbluebutton-api-php
-
-Anpassungen und Konfigurationen um die PHP-Site korrekt einzubinden: 
-In der PHP-Site gibt es eine Datei public/assets/avatars.json, in der die Daten der Avatare (name, url, fullscreen-url, url-bbb-server, alt, description) der PHP-Site gespeichert sind. Die Avatar-Bilder der PHP-Site sind gespeichert unter public/images/avatars. Die Avatar-Bilder im BBB Server sind gespeichert unter /var/www/bigbluebutton-default/images/custom/avatars.
-
-Config.php
-
-Im Öffentlichen Ordner der PHP-Site (z.B. /var/www/html/phpsite/public) muss folgende config.php Datei hinterlegt werden:
-
-ini_set('display_errors', 0);
-ini_set('display_startup_errors', 0);
-ini_set("session.cache_limiter", "must-revalidate"); // Prevent „Document not found“ when click on back button in browser
-ini_set("soap.wsdl_cache_enabled", 0); // Prevent WSDL cache
-
-date_default_timezone_set('Europe/Berlin');
-session_start();
-define( 'ROOT_PATH', dirname( __DIR__ ) . '/' );
-define( 'BASIC_PATH', dirname( __DIR__ ) );
-
-// BBB SERVER
-const BBB_SECRET = '';
-const BBB_SERVER = 'https://tours.vimuki.org';
-const BBB_SERVER_BASE_URL = 'https://tours.vimuki.org'/bigbluebutton/';
-
-
-// ILIAS INSTALLATION
-const ILIAS_BASE_URL = 'https://tutor.vimuki.org';
-const ILIAS_CLIENT = 'vimuki';
-const ILIAS_DOMAIN_NAME = 'tutor.vimuki.org';
-const NIC_ID = "";
-const ILIAS_SOAP_USERNAME = ""; // the name of the soap user you created in the ILIAS administration
-const ILIAS_SOAP_PASSWORD = ""; // password of the soap user
-
-require_once("../src/Soap/nusoap.php"); // path der nusoap.php
-
-require_once ROOT_PATH. 'Autoloader.php';
-
-Damit die Änderungen der CSS Datei für alle Benutzer sichtbar sind, definieren wir die customSystemUrl in der Methode addUserData() in ./src/Controllers/Room/Controller.php im MVC System. 
-
-$joinMeetingParams->addUserData('customStyleUrl', BBB_SERVER.'/css/custom.css');
-
-Damit das Custom CSS auch aktiv für Moderatoren ist, die durch ILIAS an BBB teilnehmen, muss der Pfad der Custom CSS Datei in der Konfiguration des MultiVC Plugins hinterlegt sein.
-
+Eine detailierte Installationsanleitung findet sich im Branch Vimuki_PHPSite. 
 
 ### Benutzung ###
 
-#### Vimuki WebService ####
+#### Verwendung der PHP-Site (MVC System) mit dem Vimuki WebService ####
 
-Der Aufruf der Seite erfolgt über die folgende URL: domainname.de/room?meetingId=MEETINGID&eventId=EVENTID&page=PAGE
+Der Aufruf der Seite erfolgt über die folgende URL: <code>domainname.de/room?meetingId=MEETINGID&eventId=EVENTID&page=PAGE</code)
 
 MEETINGID: ist die ref_id des MultiVC Objekts in ILIAS
 EVENTID: ist die ref_id der Sitzung in ILIAS 
 Page: ist die Seitenzahl der PHP-Site, Standard ist 1 
 
+Die PHP-Site übernimmt die Startzeit der Sitzung durch das Vimuki WebService Plugin. Dieses Plugin erhält durch einen SOAP-Aufruf die ref_id‘s des MultiVC Objekt und der Sitzung und gibt die Startzeit der Sitzung zurück. 
+
+Handelt es sich bei dem Objekt zur gegeben MEETINGID nicht um ein MultiVC Objekt oder handelt es bei dem Objekt der gegebene EVENTID nicht um eine Sitzung, so wird folgender Fehler angezeigt: „Zur Zeit gibt es keine Führung“. 
+
+Die PHP-Site prüft durch die BBB API, ob der BBB Raum läuft. Sollte der BBB Raum bisher nicht gestartet sein, wird folgender Fehler angezeigt: „Die Führung hat noch nicht begonnen“. 
+
+
+##### Seite 1: sichtbar für Benutzer #####
+Auf der ersten Seite kann der Start Button gedrückt werden.
+
+![Seite 1](https://github.com/museum4punkt0/VIMUKI_2.0/blob/main/webservice-seite-1.png)
+
+##### Seite 2: sichtbar für Benutzer #####
+Der gezeigte Inhalt von Seite 2 ist abhängig von der Zeit bis zur Durchführung der Führung (Startzeit):
+
+i)	Beträgt die Dauer bis zur Startzeit mehr als 6 Minuten 30 Sekunden, kann das Spiel* gestartet werden und man wählt einen Avatar aus.
+ii)	Liegt die Dauer bis zur Startzeit zwischen 1 Minuten 30 Sekunden und 6 Minuten 30 Sekunden und mehr als ist, dann kann man das Avatar auswählen, ohne das Spiel zu spielen.
+iii)	Beträgt die Dauer bis zur Startzeit weniger als 1 Minuten 30 Sekunden ist, gibt es eine Weiterleitung zu Seite 3 mit einem zufälligen Avatar Auswahl.
+
+Hier kann das Spiel gestartet werden. 
+
+![Seite 2a](https://github.com/museum4punkt0/VIMUKI_2.0/blob/main/webservice-seite-2a.png)
+
+Das Spiel wird in einer ModalBox auf der zweiten Seite gespielt. Diese ModalBox schließt durch JS, wenn das Spiel abgeschlossen wird. Im JS gibt es eine Methode game(), die den Countdown der übergegebenen Sekunden bis 0 runterzählt. Wenn diese Funktion aufgerufen wird, muss die Dauer des Spiels in Sekunden angegeben werden. 
+
+
+Danach kann ein Avatar ausgewählt werden. 
+
+![Seite 2b](https://github.com/museum4punkt0/VIMUKI_2.0/blob/main/webservice-seite-2b.png)
+
+![Seite 2c](https://github.com/museum4punkt0/VIMUKI_2.0/blob/main/webservice-seite-2c.png)
+
+##### Seite 3: sichtbar für Benutzer #####
+Auf der dritten Seite können Benutzer einen Namen eingeben und den Start Button drücken.
+
+![Seite 3](https://github.com/museum4punkt0/VIMUKI_2.0/blob/main/webservice-seite-3.png)
+
+##### Seite 4: nur im Hintergrund, nicht sichtbar für Benutzer #####
+Auf der vierten Seite findet eine Weiterleitung mit den entsprechenden Daten (Name, Avatar, Custom CSS) zum BBB Raum statt. Es gibt keine Benutzeroberfläche für diese Seite, sondern nur einen Backend Teil.
+
+##### Seite 5: #####
+Das erste Spiel ist erreichbar über folgenden Link: domainname.com/game?id=1. Diesen Link werden die Tutoren in der BigBlueButton Sitzung mitteilen
+
+##### Seite 6: #####
+Das zweite Spiel ist erreichbar über folgenden Link: domainname.com/game?id=2. Diesen Link werden die Tutoren in der BigBlueButton Sitzung mitteilen.
+
+
 ### Credits ###
 Auftraggeber/Rechteinhaber: Historisches Museum Saar https://www.historisches-museum.org
 
-Urheber: Kröpelin Projekt GmbH www.kroepelin-projekte.de
+Urheber: Kröpelin Projekt GmbH https://www.kroepelin-projekte.de
 
 Unterstützende Software: 
 [MultiVC Plugin der Internet Lehrer GmbH](https://github.com/internetlehrer/MultiVc), 
@@ -177,9 +180,3 @@ Copyright © 2021, Historisches Museum Saar
 
 [LGPL](https://github.com/bigbluebutton/bigbluebutton/blob/develop/LICENSE)
 betrifft alle Programmierungen in BigBlueButton
-
-
-
-
-
-
