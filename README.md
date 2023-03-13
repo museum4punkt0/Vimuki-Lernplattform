@@ -11,14 +11,13 @@
 
 
 ### Kurzbeschreibung ###
-Wie lässt sich das Virtuelle Museum für Kinder und Jugendliche (VIMUKI) mit den Inhalten anderer Museen und Kultureinrichtungen ausbauen? Wie entsteht ein virtueller Raum, der durch die Anzahl und Diversität des digitalen Angebots zentrale Anlaufstelle für Schüler*innen, Lehrer*innen und Kulturbegeisterte ist? (aus der Beschreibung des Teilprojekts auf www.museum4punkt0.de)
-
-Vimuki 2.0 ist eine Kombination aus verschiedenen Webanwendungen. Ein Lernportal wurde an eine bereits bestehende Landingpage angedockt. Über die ILIAS-Lernplattform können Online-Livetouren durch Museen in Form von Videokonferenzen gebucht und durchgeführt werden. Am integrierten Videokonferenztools BigBlueButton wurden Anpassungen vorgenommen und eine php-Landingpage vorgeschaltet. Der Einstieg in die virtuelle Führung kann über ein von der KONSONAUTIC Solutions GmbH und entertainment UG entwickeltes und auf die php-Landingpage integriertes Spiel erfolgen.
+Das Projekt VIMUKI - Virtuelles Museum für Kinder (und Jugendliche) – des Historischen Museums Saar widmet sich der Fragestellung, wie digitalisierte Ausstellungsbereiche und Lehrinhalte über buchbare Online-Liveführungen sowie eine Lernplattform für Schulen und Bildungseinrichtungen zugänglich gemacht werden können. 
+Die in der ersten Projektphase entwickelte Lernplattform ist eine Kombination aus verschiedenen Webanwendungen. Ein Lernportal wurde an eine bereits bestehende Landingpage angedockt. Über die ILIAS-Lernplattform können Online-Livetouren durch Museen, in Form von Videokonferenzen, gebucht und durchgeführt werden. Am integrierten Videokonferenztool BigBlueButton wurden Anpassungen vorgenommen und eine php-Landingpage vorgeschaltet. Der Einstieg in die virtuelle Führung kann über ein von der KONSONAUTIC Solutions GmbH und Entertainment Studio entwickeltes und auf die php-Landingpage integriertes Spiel erfolgen.
 
 
 ### Förderhinweis ###
 
-Diese Webanwendung ist entstanden im Verbundprojekt museum4punkt0 – Digitale Strategien für das Museum der Zukunft, Teilprojekt [Teilprojektname einfügen gemäß Verbund-Website, Kurzform möglich]. Das Projekt museum4punkt0 wird gefördert durch die Beauftragte der Bundesregierung für Kultur und Medien aufgrund eines Beschlusses des Deutschen Bundestages. 
+Diese Webanwendung ist entstanden im Verbundprojekt museum4punkt0 – Digitale Strategien für das Museum der Zukunft, Teilprojekt Vimuki – Virutelles Museum für Kinder und Jugendliche. Das Projekt museum4punkt0 wird gefördert durch die Beauftragte der Bundesregierung für Kultur und Medien aufgrund eines Beschlusses des Deutschen Bundestages. 
 
 Weitere Informationen: www.museum4punkt0.de
 
